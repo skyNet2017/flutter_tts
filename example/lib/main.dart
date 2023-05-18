@@ -52,11 +52,17 @@ class _MyAppState extends State<MyApp> {
     if (isAndroid) {
       _getDefaultEngine();
       _getDefaultVoice();
+      flutterTts.getLanguages.then((value) {
+        debugPrint("languages: $value");
+        flutterTts.setLanguage(value[0] as String);
+        isCurrentLanguageInstalled = true;
+      });
+
     }
 
     flutterTts.setStartHandler(() {
       setState(() {
-        print("Playing");
+        debugPrint("Playing");
         ttsState = TtsState.playing;
       });
     });
@@ -64,42 +70,42 @@ class _MyAppState extends State<MyApp> {
     if (isAndroid) {
       flutterTts.setInitHandler(() {
         setState(() {
-          print("TTS Initialized");
+          debugPrint("TTS Initialized");
         });
       });
     }
 
     flutterTts.setCompletionHandler(() {
       setState(() {
-        print("Complete");
+        debugPrint("Complete");
         ttsState = TtsState.stopped;
       });
     });
 
     flutterTts.setCancelHandler(() {
       setState(() {
-        print("Cancel");
+        debugPrint("Cancel");
         ttsState = TtsState.stopped;
       });
     });
 
     flutterTts.setPauseHandler(() {
       setState(() {
-        print("Paused");
+        debugPrint("Paused");
         ttsState = TtsState.paused;
       });
     });
 
     flutterTts.setContinueHandler(() {
       setState(() {
-        print("Continued");
+        debugPrint("Continued");
         ttsState = TtsState.continued;
       });
     });
 
     flutterTts.setErrorHandler((msg) {
       setState(() {
-        print("error: $msg");
+        debugPrint("error: $msg");
         ttsState = TtsState.stopped;
       });
     });
@@ -112,14 +118,14 @@ class _MyAppState extends State<MyApp> {
   Future _getDefaultEngine() async {
     var engine = await flutterTts.getDefaultEngine;
     if (engine != null) {
-      print(engine);
+      debugPrint("_getDefaultEngine->"+engine.toString());
     }
   }
 
   Future _getDefaultVoice() async {
     var voice = await flutterTts.getDefaultVoice;
     if (voice != null) {
-      print(voice);
+      debugPrint("_getDefaultVoice->"+voice.toString());
     }
   }
 
